@@ -1,42 +1,42 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
-
-
 import CLI.Parser;
 import CLI.Terminal;
-import java.io.File;
+import java.util.ArrayList; // Import ArrayList
 import java.util.Scanner;
 
-public class Main
-{
+public class Main {
     public static void main(String[] args)
     {
-        Terminal terminal=new Terminal();
-        Parser   parser=new Parser();
+        ArrayList<String> CommandsHistory = new ArrayList<>(); // Use ArrayList to store command history
+        int cnt = 1;
+        Terminal terminal = new Terminal();
+        Parser parser = new Parser();
         String command;
         String[] Arguments;
         String INPUT;
-        boolean stay=true;
+        boolean stay = true;
 
-        Scanner input=new Scanner(System.in);
-        while (stay)
-        {
+        Scanner input = new Scanner(System.in);
+        while (stay) {
             System.out.print(">");
-            INPUT=input.nextLine();
-            if(INPUT.equals("exit"))
-            {
-                stay=false;
+            INPUT = input.nextLine();
+            if (INPUT.equals("exit")) {
+                stay = false;
                 break;
             }
 
-            if(parser.parse(INPUT))
-            {
-                command=parser.getCommandName();
-                Arguments= parser.getArgs();
-
-                terminal.chooseCommandAction(command,Arguments);
+            if (parser.parse(INPUT)) {
+                command = parser.getCommandName();
+                Arguments = parser.getArgs();
+                CommandsHistory.add(command); // Add the command to the command history
+                if (command.equals("history")) { // Use .equals to compare strings
+                    for (String x : CommandsHistory) {
+                        System.out.print(cnt++ + " ");
+                        System.out.println(x);
+                    }
+                } else {
+                    terminal.chooseCommandAction(command, Arguments);
+                }
             }
         }
-
     }
-    }
+}
